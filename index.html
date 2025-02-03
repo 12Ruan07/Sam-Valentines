@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Be My Valentine</title>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            color: #ff3366;
+            position: relative;
+            overflow: hidden;
+            background-color: pink; /* Add pink background */
+            z-index: -2;
+        }
+        body::before {
+            content: "";
+            background: url('valentines.jpg') no-repeat center center fixed;
+            background-size: contain;
+            background-position: center;
+            opacity: 0.2; /* Adjust the transparency here */
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .heart {
+            font-size: 100px;
+            color: #ff3366;
+        }
+        .message {
+            font-size: 24px;
+            margin-top: 20px;
+        }
+        .button {
+            margin-top: 50px; /* Add gap at the top of the buttons */
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #ff3366;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 10px;
+        }
+        .button:hover {
+            background-color: #ff6699;
+        }
+        .response {
+            display: none;
+            font-size: 24px;
+            margin-top: 20px;
+            color: #ff3366;
+            font-weight: bold;
+        }
+        .final-message {
+            display: none;
+            font-size: 24px;
+            margin-top: 20px;
+            color: #ff3366;
+            font-weight: bold;
+        }
+        .yes-message {
+            display: none;
+            font-size: 20px; /* 1 size smaller */
+            margin-top: 20px;
+            color: #ff3366;
+            font-weight: bold; /* Make text bold */
+        }
+    </style>
+    <script>
+        let noButtonClickCount = 0;
+        const noMessages = [
+            '😢 Are you sure?😢',
+            '😢 Are you sure sure? 😢',
+            '😢 Ag no really? 😢',
+            '😢 Did you really just...? 😢',
+            '😢 Last chance! 😢'
+        ];
+
+        function showMessage(response) {
+            document.getElementById('response').innerText = response;
+            document.getElementById('response').style.display = 'block';
+        }
+
+        function shrinkNoButton() {
+            const noButton = document.getElementById('noButton');
+            const yesButton = document.querySelector('.button:not(#noButton)');
+            const currentNoSize = parseInt(window.getComputedStyle(noButton).fontSize);
+            const currentYesSize = parseInt(window.getComputedStyle(yesButton).fontSize);
+            noButton.style.fontSize = (currentNoSize - 3) + 'px';
+            yesButton.style.fontSize = (currentYesSize + 3) + 'px';
+
+            showMessage(noMessages[noButtonClickCount % noMessages.length]);
+
+            noButtonClickCount++;
+            if (noButtonClickCount >= 5) {
+                noButton.style.display = 'none';
+                document.getElementById('finalMessage').style.display = 'block';
+                document.getElementById('response').style.display = 'none';
+            }
+        }
+
+        function yesButtonClick() {
+            showMessage('😍 Yay! I\'m so happy you said yes! 😍');
+            document.getElementById('noButton').style.display = 'none';
+            document.getElementById('finalMessage').style.display = 'none';
+            document.getElementById('yesMessage1').style.display = 'block';
+            document.getElementById('yesMessage2').style.display = 'block';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="heart">❤️</div>
+        <div class="message">Will you be my Valentine?</div>
+        <button class="button" onclick="yesButtonClick()">Yes</button>
+        <button id="noButton" class="button" onclick="shrinkNoButton();">No</button>
+        <div id="response" class="response"></div>
+        <div id="finalMessage" class="final-message">😜 Guess you just have to say yes now 😜</div>
+        <div id="yesMessage1" class="yes-message">😘 Go give Ruan a kiss to confirm your selection 😘</div>
+        <div id="yesMessage2" class="yes-message">😉 This is only an electronic confirmation (Step 1 of 2) 😉</div>
+    </div>
+</body>
+</html>
